@@ -49,40 +49,40 @@ Mini Project GO
                         
                     </div>
                     <div class="card-body">
-
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Assignee</th>
-                                    <th>Task</th>
-                                    <th>Deadline</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{range $tugtug := .Tugtug}}
-                                <tr>
-                                    <td>{{$tugtug.Assignee}}</td>
-                                    <td>{{$tugtug.Task}}</td>
-                                    <td>{{$tugtug.Deadline}}</td>
-                                    <td>
-                                        {{if $tugtug.IsFinish}}
-                                            <button class="btn btn-success"><i class="fa-solid fa-flag-checkered"></i> Done</button>
-                                        {{else}}
-                                            <a href="/edit/{{$tugtug.ID}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Ganti</a>
-                                            <form class="d-inline" action="selesai/{{$tugtug.ID}}" method="POST">
-                                                <button class="btn btn-info" type="submit"><i class="fa-solid fa-check"></i>&nbsp;Selesai</button>
-                                            </form>
-                                            <a href="hapus/{{$tugtug.ID}}" class="btn btn-danger delete-confirm"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Assignee</th>
+                                        <th>Task</th>
+                                        <th>Deadline</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range $tugtug := .Tugtug}}
+                                    <tr>
+                                        <td>{{$tugtug.Assignee}}</td>
+                                        <td>{{$tugtug.Task}}</td>
+                                        <td>{{$tugtug.Deadline}}</td>
+                                        <td>
+                                            {{if $tugtug.IsFinish}}
+                                                <button class="btn btn-success"><i class="fa-solid fa-flag-checkered"></i> Done</button>
+                                            {{else}}
+                                                <a href="/edit/{{$tugtug.ID}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Ganti</a>
+                                                <form class="d-inline" action="selesai/{{$tugtug.ID}}" method="POST">
+                                                    <button class="btn btn-info" type="submit"><i class="fa-solid fa-check"></i>&nbsp;Selesai</button>
+                                                </form>
+                                                <a href="hapus/{{$tugtug.ID}}" class="btn btn-danger delete-confirm"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a>
+                                                
+                                            {{end}}
                                             
-                                        {{end}}
-                                        
-                                    </td>
-                                </tr>
-                                {{end}}
-                            </tbody>
-                        </table>
-
+                                        </td>
+                                    </tr>
+                                    {{end}}
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
                 </div>
