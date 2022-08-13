@@ -1,0 +1,44 @@
+{{define "title"}}
+Ganti Task
+{{end}}
+
+{{define "css"}}
+{{end}}
+
+{{define "script"}}
+{{end}}
+
+{{define "main"}}
+    <h1 class="display-6 mt-5"><strong> TugTug</strong> : Edit Data</h1>
+    <form method="POST" action="/update/{{.IDUpdate}}">
+        <div class="row mb-2">
+            <div class="col-2">Nama Petugas</div>
+            <div class="col-6">
+                <input type="text" name="assignee" placeholder="Masukkan petugas"  class="form-control" value="{{.Tugtug.Assignee}}">
+            </div>
+        </div>
+        
+        <div class="row mb-2">
+            <div class="col-2">Rincian Tugas</div>
+            <div class="col-6">
+                <textarea name="task" placeholder="Masukkan tugas" rows="3" class="form-control">{{.Tugtug.Task}}</textarea>        
+            </div>
+        </div>
+        
+        <div class="row mb-2">
+            <div class="col-2">Tanggal Deadline</div>
+            <div class="col-6">
+                <input type="date" name="deadline" value="{{.Tugtug.Deadline}}"  class="form-control">
+            </div>
+        </div>
+
+        
+        <div class="row mb-2">
+            <div class="col-6 offset-2">
+                <button class="btn btn-outline-primary" type="submit">Submit</button>
+            </div>
+        </div>
+        
+    </form>
+{{end}}
+
