@@ -8,7 +8,26 @@ Mini Project GO
 
 {{define "script"}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js" integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
+
+        $('.delete-confirm').on('click', function (event) {
+            event.preventDefault();
+            const url = $(this).attr('href');
+            swal({
+                title: 'Anda yakin akan menghapus ?',
+                text: 'Data ini akan terhapus secara permanen',
+                icon: 'warning',
+                buttons: ["Cancel", "Yes!"],
+            }).then(function(value) {
+                if (value) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+
         $(document).ready(function(){
             $('.table').DataTable()
         })
@@ -16,42 +35,61 @@ Mini Project GO
 {{end}}
 
 {{define "main"}}
-    <h1 class="display-6 mt-5"><strong> TugTug</strong></h1>
-    <p> Catat dan Delegasikan Tugasmu</p>
-    <a class="btn btn-success mb-3" href="/create"><i class="fa-solid fa-plus"></i> Tambah</a>
+    <section class="content">
+        <div class="row">      
+            <div class="col-md-12 col-sm-8">
+                <div class="card">
+                    <div class="card-header text-dark bg-light">
+                        <div class="row">
+                            <div class="col-md-4 mt-2"><h4>Daftar Tugas</h4></div>
+                            <div class="col-md-8" style="text-align:right">
+                                <a class="btn btn-success mt-1" href="/create"><i class="fa-solid fa-plus"></i> Tambah</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="card-body">
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Task</th>
-                <th>Assignee</th>
-                <th>Deadline</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{range $tugtug := .Tugtug}}
-            <tr>
-                <td>{{$tugtug.Assignee}}</td>
-                <td>{{$tugtug.Task}}</td>
-                <td>{{$tugtug.Deadline}}</td>
-                <td>
-                    {{if $tugtug.IsFinish}}
-                        <button class="btn btn-success">Done</button>
-                    {{else}}
-                        <a href="/edit/{{$tugtug.ID}}" class="btn btn-warning">Ganti</a>
-                        <form class="d-inline" action="selesai/{{$tugtug.ID}}" method="POST">
-                            <button class="btn btn-info" type="submit">Selesai</button>
-                        </form>
-                        <form class="d-inline" action="hapus/{{$tugtug.ID}}" method="POST">
-                            <button class="btn btn-danger" type="submit">Delete</button>
-                        </form>
-                    {{end}}
-                    
-                </td>
-            </tr>
-            {{end}}
-        </tbody>
-    </table>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Assignee</th>
+                                    <th>Task</th>
+                                    <th>Deadline</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range $tugtug := .Tugtug}}
+                                <tr>
+                                    <td>{{$tugtug.Assignee}}</td>
+                                    <td>{{$tugtug.Task}}</td>
+                                    <td>{{$tugtug.Deadline}}</td>
+                                    <td>
+                                        {{if $tugtug.IsFinish}}
+                                            <button class="btn btn-success"><i class="fa-solid fa-flag-checkered"></i> Done</button>
+                                        {{else}}
+                                            <a href="/edit/{{$tugtug.ID}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i>&nbsp;Ganti</a>
+                                            <form class="d-inline" action="selesai/{{$tugtug.ID}}" method="POST">
+                                                <button class="btn btn-info" type="submit"><i class="fa-solid fa-check"></i>&nbsp;Selesai</button>
+                                            </form>
+                                            <a href="hapus/{{$tugtug.ID}}" class="btn btn-danger delete-confirm"><i class="fa-solid fa-trash"></i>&nbsp;Delete</a>
+                                            
+                                        {{end}}
+                                        
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
 {{end}}
 

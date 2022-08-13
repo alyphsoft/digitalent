@@ -32,7 +32,7 @@ func main() {
 	router.GET("/edit/:id", tugtugController.Edit)
 	router.POST("/update/:id_update", tugtugController.Update)
 	router.POST("/selesai/:id_update", tugtugController.Finished)
-	router.POST("/hapus/:id_update", tugtugController.Delete)
+	router.GET("/hapus/:id_update", tugtugController.Delete)
 
 	port := ":8081"
 	fmt.Printf("Aplikasi jalan di http://localhost%s", port)

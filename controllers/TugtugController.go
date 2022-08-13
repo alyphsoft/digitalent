@@ -62,20 +62,25 @@ func (controller *TugtugController) Create(w http.ResponseWriter, r *http.Reques
 	}
 
 	if r.Method == "POST" {
-		fmt.Println(r.FormValue("task"))
-		tugas := models.Tugtug{
-			Assignee: r.FormValue("assignee"),
-			Task:     r.FormValue("task"),
-			Deadline: r.FormValue("deadline"),
-			IsFinish: false,
-		}
+		// fmt.Println(r.FormValue("task"))
+		if r.FormValue("assignee") == "" || r.FormValue("task") == "" || r.FormValue("deadline") == "" {
+			log.Println("Ada isian yang kosong")
+			http.Redirect(w, r, "/", http.StatusFound)
+		} else {
+			tugas := models.Tugtug{
+				Assignee: r.FormValue("assignee"),
+				Task:     r.FormValue("task"),
+				Deadline: r.FormValue("deadline"),
+				IsFinish: false,
+			}
 
-		result := db.Create(&tugas)
-		if result.Error != nil {
-			log.Println(result.Error)
-		}
+			result := db.Create(&tugas)
+			if result.Error != nil {
+				log.Println(result.Error)
+			}
 
-		http.Redirect(w, r, "/", http.StatusFound)
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
 	} else if r.Method == "GET" {
 		files := []string{
 			"./views/base.html",
@@ -143,23 +148,28 @@ func (controller *TugtugController) Edit(w http.ResponseWriter, r *http.Request,
 func (controller *TugtugController) Update(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	// http.Error(w, params.ByName("id"), http.StatusOK)
 	// fmt.Fprint(w, "Welcome\n")
-	db, err := gorm.Open(sqlite.Open("akubisa2.db"), &gorm.Config{})
-	if err != nil {
-		panic(err.Error())
+	if r.FormValue("assignee") == "" || r.FormValue("task") == "" || r.FormValue("deadline") == "" {
+		log.Println("Ada isian yang kosong")
+		http.Redirect(w, r, "/", http.StatusFound)
+	} else {
+		db, err := gorm.Open(sqlite.Open("akubisa2.db"), &gorm.Config{})
+		if err != nil {
+			panic(err.Error())
+		}
+
+		tugtugID := params.ByName("id_update")
+		var tugtug models.Tugtug
+		db.Where("ID = ?", tugtugID).First(&tugtug)
+
+		tugtug.Assignee = r.FormValue("assignee")
+		tugtug.Task = r.FormValue("task")
+		tugtug.Deadline = r.FormValue("deadline")
+
+		db.Save(&tugtug)
+		fmt.Println(tugtug)
+
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
-
-	tugtugID := params.ByName("id_update")
-	var tugtug models.Tugtug
-	db.Where("ID = ?", tugtugID).First(&tugtug)
-
-	tugtug.Assignee = r.FormValue("assignee")
-	tugtug.Task = r.FormValue("task")
-	tugtug.Deadline = r.FormValue("deadline")
-
-	db.Save(&tugtug)
-	fmt.Println(tugtug)
-
-	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func (controller *TugtugController) Finished(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
